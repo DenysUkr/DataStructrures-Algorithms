@@ -4,12 +4,21 @@
 
 class Employee:
     def __init__(self, **kwargs):
-        pass
-        '''##### ADD CODE HERE #####'''
+            self.name = kwargs["name"]
+            self.id = kwargs["id"]
+            if "salary" in kwargs:
+                self.salary = kwargs["salary"]
+            else:
+                self.salary = 80000
 
+
+    def get_salary(self):
+        return self.cal_salary()
+
+    def cal_salary(self):
+        return self.salary
     def __str__(self):
-        pass
-        '''##### ADD CODE HERE #####'''
+        return f"Employee \n {self.name},{self.id},{self.salary}"
 
 
 ############################################################
@@ -17,12 +26,27 @@ class Employee:
 ############################################################
 class Permanent_Employee(Employee):
     def __init__(self, **kwargs):
-        pass
-        '''##### ADD CODE HERE #####'''
+        super().__init__(name=kwargs["name"], id=kwargs["id"], salary=kwargs["salary"])
+        if "salary" in kwargs:
+            self.benefits = kwargs["benefits"]
+        else:
+            self.benefits = []
+
+
+    def cal_salary(self):
+        # checking if the benefits array is empty
+        if len(self.benefits) == 0:
+            return self.salary
+        if "health_insurance" and "retirement" in self.benefits:
+            return self.salary * 0.7
+        if "retirement" in self.benefits:
+            return self.salary * 0.8
+        if "health_insurance" in self.benefits:
+            return self.salary * 0.9
+
 
     def __str__(self):
-        pass
-        '''##### ADD CODE HERE #####'''
+        return f"Permanent_Employee \n {self.name},{self.id},{self.salary},{self.benefits}"
 
 
 ############################################################
@@ -30,12 +54,17 @@ class Permanent_Employee(Employee):
 ############################################################
 class Manager(Employee):
     def __init__(self, **kwargs):
-        pass
-        '''##### ADD CODE HERE #####'''
+        super().__init__(name=kwargs["name"], id=kwargs["id"], salary=kwargs["salary"])
+        self.bonus = kwargs.get("bonus")
+
+    def cal_salary(self):
+        return self.salary + self.bonus
+
 
     def __str__(self):
-        pass
-        '''##### ADD CODE HERE #####'''
+        return f"Manager \n {self.name},{self.id},{self.salary},{self.bonus}"
+
+
 
 
 ############################################################
@@ -43,12 +72,15 @@ class Manager(Employee):
 ############################################################
 class Temporary_Employee(Employee):
     def __init__(self, **kwargs):
-        pass
-        '''##### ADD CODE HERE #####'''
+        super().__init__(name=kwargs["name"], id=kwargs["id"], salary=kwargs["salary"])
+        self.hours = kwargs.get("hours")
+
+    def cal_salary(self):
+        return self.salary * self.hours
+
 
     def __str__(self):
-        pass
-        '''##### ADD CODE HERE #####'''
+        return f"Temporary_Employee \n {self.name},{self.id},{self.salary},{self.hours}"
 
 
 ############################################################
@@ -56,37 +88,56 @@ class Temporary_Employee(Employee):
 ############################################################
 class Consultant(Temporary_Employee):
     def __init__(self, **kwargs):
-        pass
-        '''##### ADD CODE HERE #####'''
+        super().__init__(name=kwargs["name"], id=kwargs["id"], salary=kwargs["salary"])
+        self.hours = kwargs.get("hours")
+        self.travel = kwargs.get("travel")
+
+    def cal_salary(self):
+        return self.salary * self.hours + (self.travel * 1000)
+
 
     def __str__(self):
-        pass
-        '''##### ADD CODE HERE #####'''
+        return f"Consultant \n {self.name},{self.id},{self.salary},{self.hours},{self.travel}"
 
 
 ############################################################
 ############################################################
-############################################################
+############################################################ NEEEEED TO FIX############################################################ NEEEEED TO FIX
+############################################################ NEEEEED TO FIX
+############################################################ NEEEEED TO FIX
+############################################################ NEEEEED TO FIX
+############################################################ NEEEEED TO FIX
 class Consultant_Manager(Consultant, Manager):
-    def __init__(self,  **kwargs):
-        pass
-        '''##### ADD CODE HERE #####'''
+    def __init__(self, **kwargs):
+        Consultant.__init__(self, name=kwargs["name"], id=kwargs["id"], salary=kwargs["salary"], hours=kwargs["hours"], travel=kwargs["travel"])
+        Manager.__init__(self, name=kwargs["name"], id=kwargs["id"], salary=kwargs["salary"], bonus=kwargs["bonus"])
 
+    def cal_salary(self):
+        return self.salary * self.hours + (self.travel * 1000) + self.bonus
+
+    ############################################################ NEEEEED TO FIX
     def __str__(self):
-        pass
-        '''##### ADD CODE HERE #####'''
+        return f"Consultant_Manager \n {self.name},{self.id},{self.salary},{self.hours},{self.travel},{self.bonus}"
 
 ############################################################
 ############################################################
 ############################################################
 
 def calculate_total_salaries(employee_list):
-    pass
-    '''##### ADD CODE HERE #####'''
+    returnSum = 0
+
+    #looping though all employess and summing them
+    for employee in employee_list:
+        returnSum += employee.get_salary()
+
 
 def calculate_manager_salaries(employee_list):
-    pass
-    '''##### ADD CODE HERE #####'''
+    returnSum = 0
+
+    # looping though all employess and summing them
+    for employee in employee_list:
+        if isinstance(employee, Consultant_Manager) or isinstance(employee, Manager):
+            returnSum += employee.get_salary()
 
 
 ''' ##### DRIVER CODE #####
