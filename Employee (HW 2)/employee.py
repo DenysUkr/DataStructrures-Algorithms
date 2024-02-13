@@ -37,11 +37,11 @@ class Permanent_Employee(Employee):
         # checking if the benefits array is empty
         if len(self.benefits) == 0:
             return self.salary
-        if "health_insurance" and "retirement" in self.benefits:
+        if "health_insurance" in self.benefits and "retirement" in self.benefits:
             return self.salary * 0.7
-        if "retirement" in self.benefits:
+        elif "retirement" in self.benefits:
             return self.salary * 0.8
-        if "health_insurance" in self.benefits:
+        elif "health_insurance" in self.benefits:
             return self.salary * 0.9
 
 
@@ -102,11 +102,8 @@ class Consultant(Temporary_Employee):
 
 ############################################################
 ############################################################
-############################################################ NEEEEED TO FIX############################################################ NEEEEED TO FIX
-############################################################ NEEEEED TO FIX
-############################################################ NEEEEED TO FIX
-############################################################ NEEEEED TO FIX
-############################################################ NEEEEED TO FIX
+############################################################
+
 class Consultant_Manager(Consultant, Manager):
     def __init__(self, **kwargs):
         Consultant.__init__(self, name=kwargs["name"], id=kwargs["id"], salary=kwargs["salary"], hours=kwargs["hours"], travel=kwargs["travel"])
@@ -115,7 +112,6 @@ class Consultant_Manager(Consultant, Manager):
     def cal_salary(self):
         return self.salary * self.hours + (self.travel * 1000) + self.bonus
 
-    ############################################################ NEEEEED TO FIX
     def __str__(self):
         return f"Consultant_Manager \n {self.name},{self.id},{self.salary},{self.hours},{self.travel},{self.bonus}"
 
@@ -164,7 +160,7 @@ print("Check Salaries")
 print("Emma's Salary is:", emma.cal_salary())
 emma.benefits = ["health_insurance"]
 print("Emma's Salary is:", emma.cal_salary())
-emma.benefits = ["retirement", "health_insurance"]
+emma.benefits = ["retirement"]
 print("Emma's Salary is:", emma.cal_salary())
 print("Sam's Salary is:", sam.cal_salary())
 print("John's Salary is:", john.cal_salary())
