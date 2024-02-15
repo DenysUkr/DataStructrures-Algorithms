@@ -16,10 +16,10 @@ import time
 # Output: returns the number of lines of code that will be written
 #         before the coder falls asleep
 def sum_series(lines_before_coffee, prod_loss):
-    if lines_before_coffee//prod_loss == 0:
+    if lines_before_coffee // prod_loss < 1:
         return lines_before_coffee
     else:
-        return sum_series(lines_before_coffee, prod_loss * 2) + lines_before_coffee // prod_loss
+        return sum_series(lines_before_coffee // prod_loss, prod_loss) + lines_before_coffee
 
 
 # Purpose: Uses a linear search to find the initial lines of code to
@@ -30,6 +30,10 @@ def sum_series(lines_before_coffee, prod_loss):
 #        prod_loss - factor for loss of productivity after each coffee
 # Output: returns the initial lines of code to write before coffee
 def linear_search(total_lines, prod_loss):
+    # checking the edge case in case prod loss is bigger then total lines
+    if prod_loss >= total_lines:
+        return total_lines, 0
+
     for linesCoded in range(1, total_lines):
         if sum_series(linesCoded, prod_loss) >= total_lines:
             return linesCoded, linesCoded
@@ -43,17 +47,14 @@ def linear_search(total_lines, prod_loss):
 #        prod_loss - factor for loss of productivity after each coffee
 # Output: returns the initial lines of code to write before coffee
 def binary_search(total_lines: int, prod_loss: int):
-    # creating an array to hold all of the possible lines of code before coffee
-    numArray = [None] * total_lines
-    for i in range(0, total_lines):
-        numArray[i] = i + 1
+    # checking the edge case in case prod loss is bigger then total lines
+    if prod_loss >= total_lines:
+        return total_lines, 0
 
-    # declaring the variables for the bianary search
     low = 0
-    midpoint = 0
-    high = len(numArray) - 1
-
+    high = total_lines
     iteration = 0
+
     # looping until find the right value
     while low <= high:
 
@@ -71,6 +72,9 @@ def binary_search(total_lines: int, prod_loss: int):
 
         iteration = iteration + 1
 
+    # checks if low goes over high when there is an odd ammount of total lines
+    if low > high:
+        return midpoint, iteration + 1
 
 ''' ##### DRIVER CODE #####
     ##### Do not change, except for the debug flag '''
@@ -80,7 +84,7 @@ def main():
 
     # Open input source
     # Change debug to false before submitting
-    debug = True
+    debug = False
     if debug:
         in_data = open('work.in')
     else:

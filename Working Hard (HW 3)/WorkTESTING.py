@@ -19,7 +19,7 @@ def sum_series(lines_before_coffee, prod_loss):
     if lines_before_coffee//prod_loss < 1:
         return lines_before_coffee
     else:
-        return sum_series(lines_before_coffee, prod_loss * 2) + lines_before_coffee // prod_loss
+        return sum_series(lines_before_coffee//prod_loss, prod_loss) + lines_before_coffee
 
 
 # Purpose: Uses a linear search to find the initial lines of code to
@@ -50,8 +50,7 @@ def binary_search(total_lines, prod_loss):
 
     # declaring the variables for the bianary search
     low = 0
-    midpoint = 0
-    high = len(numArray) - 1
+    high = total_lines
 
     iteration = 0
     # looping until find the right value
