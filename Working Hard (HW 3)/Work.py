@@ -32,7 +32,7 @@ def sum_series(lines_before_coffee, prod_loss):
 def linear_search(total_lines, prod_loss):
     for linesCoded in range(1, total_lines):
         if sum_series(linesCoded, prod_loss) >= total_lines:
-            return linesCoded
+            return linesCoded, linesCoded
 
 
 # Purpose: Uses a binary search to find the initial lines of code to
@@ -53,6 +53,7 @@ def binary_search(total_lines: int, prod_loss: int):
     midpoint = 0
     high = len(numArray) - 1
 
+    iteration = 0
     # looping until find the right value
     while low <= high:
 
@@ -60,7 +61,7 @@ def binary_search(total_lines: int, prod_loss: int):
         midpoint = (low + high) // 2
 
         if high == midpoint or sum_series(midpoint, prod_loss) == total_lines:
-            return midpoint
+            return midpoint, iteration + 1
         # if the SumSeries returns a bigger number then total lines then cut off the TOP part of the array
         if sum_series(midpoint, prod_loss) > total_lines:
             high = midpoint - 1
@@ -68,6 +69,7 @@ def binary_search(total_lines: int, prod_loss: int):
         if sum_series(midpoint, prod_loss) < total_lines:
             low = midpoint + 1
 
+        iteration = iteration + 1
 
 
 ''' ##### DRIVER CODE #####

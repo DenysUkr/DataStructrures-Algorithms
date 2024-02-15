@@ -16,7 +16,7 @@ import time
 # Output: returns the number of lines of code that will be written
 #         before the coder falls asleep
 def sum_series(lines_before_coffee, prod_loss):
-    if lines_before_coffee//prod_loss == 0:
+    if lines_before_coffee//prod_loss < 1:
         return lines_before_coffee
     else:
         return sum_series(lines_before_coffee, prod_loss * 2) + lines_before_coffee // prod_loss
@@ -30,9 +30,9 @@ def sum_series(lines_before_coffee, prod_loss):
 #        prod_loss - factor for loss of productivity after each coffee
 # Output: returns the initial lines of code to write before coffee
 def linear_search(total_lines, prod_loss):
-    for linesCoded in range(1, total_lines):
+    for linesCoded in range(total_lines):
         if sum_series(linesCoded, prod_loss) >= total_lines:
-            return linesCoded
+            return linesCoded, linesCoded
 
 
 # Purpose: Uses a binary search to find the initial lines of code to
@@ -53,25 +53,29 @@ def binary_search(total_lines, prod_loss):
     midpoint = 0
     high = len(numArray) - 1
 
-    iteration = 1
+    iteration = 0
     # looping until find the right value
     while low <= high:
-        print(f"Itterration #{iteration}")
+        print(f"Itterration #{iteration+1}")
 
         # calculate the midpoint
         midpoint = (low + high)//2
-        print(f"Midpoint = {iteration}")
+        print(f"Midpoint = {midpoint}")
+        print(f"sum_series({midpoint}, {prod_loss}) = {sum_series(midpoint,prod_loss)} vs {total_lines}")
 
 
         if high == midpoint or sum_series(midpoint, prod_loss) == total_lines :
             print(f"Returning Midpoint at {midpoint}")
-            return midpoint
+            print(f"Returning {iteration+1} ")
+            return midpoint, iteration + 1
         # if the SumSeries returns a bigger number then total lines then cut off the TOP part of the array
         if sum_series(midpoint, prod_loss) > total_lines:
+            print(f"Our bounds are: {low} to {high}")
             print(f"Replacing high({high}) with mid({midpoint})")
             high = midpoint - 1
         # if the SumSeries returns a smaller number then total lines then cut off the BOTTOM part of the array
         if sum_series(midpoint, prod_loss) < total_lines:
+            print(f"Our bounds are: {low} to {high}")
             print(f"Replacing low({low}) with mid({midpoint})")
             low = midpoint + 1
 
@@ -84,8 +88,15 @@ def binary_search(total_lines, prod_loss):
 
 
 def main():
-    print(f" Our sum is: {sum_series(20, 2)}")
-    binary_search(300, 2)
+    linesOfCode = 100000
+    productivityDrop = 7
+    print(f" Lines of code are: {linesOfCode} "
+          f"\n Productivity Drop is: {productivityDrop} "
+          f"\n Our sum is: {sum_series(linesOfCode, productivityDrop)}")
+    print(f" TEST : {sum_series(77784, 7)}")
+
+    print(f"Linear Search Output = {linear_search(linesOfCode, productivityDrop)}")
+    binary_search(linesOfCode, productivityDrop)
 
 
 if __name__ == "__main__":
